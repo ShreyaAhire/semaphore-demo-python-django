@@ -1,4 +1,4 @@
-"""tasks URL Configuration
+"""pydjango_ci_integration URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -14,35 +14,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 """
-from django.urls import path
-from . import views
+from django.conf.urls import url, include
+from django.contrib import admin
 
-app_name = 'tasks'
-
-urlpatterns = [
-    path('', views.TaskList.as_view(), name='tasks_list'),
-    path('new/', views.TaskCreate.as_view(), name='tasks_new'),
-    path('task/<int:pk>', views.TaskDetails.as_view(), name='tasks_view'),
-    path('edit/<int:pk>', views.TaskUpdate.as_view(), name='tasks_edit'),
-    path('delete/<int:pk>', views.TaskDelete.as_view(), name='tasks_delete'),
-]
-"""
-
-#--
-"""
-tasks URL Configuration
-"""
-
-from django.urls import path
-from . import views
-
-app_name = "tasks"
+from tasks import views
 
 urlpatterns = [
-    path("", views.TaskList.as_view(), name="tasks_list"),
-    path("new/", views.TaskCreate.as_view(), name="tasks_new"),
-    path("task/<int:pk>/", views.TaskDetails.as_view(), name="tasks_view"),
-    path("edit/<int:pk>/", views.TaskUpdate.as_view(), name="tasks_edit"),
-    path("delete/<int:pk>/", views.TaskDelete.as_view(), name="tasks_delete"),
+    url(r'^admin/', admin.site.urls),
+    url('', include('tasks.urls'))
 ]
 
+handler404 = views.Custom404.as_view()
+handler500 = views.Custom500.as_view()
+"""
+#---
+"""pydjango_ci_integration URL Configuration
+
+For more details, see:
+https://docs.djangoproject.com/en/5.1/topics/http/urls/
+"""
+
+from django.contrib import admin
+from django.urls import path, include, re_path
+
+from tasks import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('tasks.urls')),
+]
+
+# Custom error handlers
+handler404 = views.Custom404.as_view()
+handler500 = views.Custom500.as_view()
