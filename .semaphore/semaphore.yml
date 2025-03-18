@@ -32,7 +32,8 @@ blocks:
       jobs:
         - name: Pylint
           commands:
-            - git ls-files | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | grep -E '.py$' | xargs pylint -E --load-plugins=pylint_django
+            - pip install --upgrade pylint pylint-django pylint-plugin-utils
+            - git ls-files | grep -E '.py$' | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | xargs pylint -E --load-plugins=pylint_django
   - name: Run Unit Tests
     task:
       prologue:
