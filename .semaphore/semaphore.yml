@@ -37,7 +37,7 @@ blocks:
         - name: Pylint
           commands:
             - pip install --upgrade pylint pylint-django pylint-plugin-utils
-            - git ls-files | grep -E '.py$' | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | xargs pylint -E --load-plugins=pylint_django
+            - 'pylint --disable=all --enable=E,F $(git ls-files ''*.py'' | grep -v ''migrations'' | grep -v ''settings.py'' | grep -v ''manage.py'')'
   - name: Run Unit Tests
     task:
       prologue:
