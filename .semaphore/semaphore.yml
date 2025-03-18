@@ -13,14 +13,15 @@ blocks:
     task:
       prologue:
         commands:
-          - sudo apt-get update && sudo apt-get install -y python3.10-dev && sudo apt-get install default-libmysqlclient-dev
+          - sudo apt-get update
+          - sudo apt-get install -y python3.10-venv python3-dev default-libmysqlclient-dev
       jobs:
         - name: pip
           commands:
             - checkout
             - cache restore
-            - python3.10 -m venv virtualenv
-            - source ./virtualenv/bin/activate
+            - python3.10 -m venv ~/virtualenv || python3.10 -m ensurepip --default-pip
+            - source ~/virtualenv/bin/activate
             - pip install --upgrade pip
             - pip install -r requirements.txt
   - name: Run Code Analysis
