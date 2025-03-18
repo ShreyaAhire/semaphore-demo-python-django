@@ -22,7 +22,6 @@ blocks:
             - pip download --cache-dir .pip_cache -r requirements.txt
             - cache store
             - export DJANGO_SETTINGS_MODULE=pydjango_ci_integration.settings
-            - python -c "import django; django.setup()"
   - name: Run Code Analysis
     task:
       prologue:
