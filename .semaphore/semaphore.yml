@@ -33,6 +33,7 @@ blocks:
           - checkout
           - cache restore
           - pip install -r requirements.txt --cache-dir .pip_cache
+          - pip install --upgrade pylint
       jobs:
         - name: Pylint
           commands:
