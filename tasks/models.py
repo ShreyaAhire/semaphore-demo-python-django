@@ -19,7 +19,7 @@ class Task(models.Model):
         """
         :return: string to represent Task model
         """
-        return self.task_title
+        return str(self.task_title)
 
     def get_absolute_url(self):
         """
