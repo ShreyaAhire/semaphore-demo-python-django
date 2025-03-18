@@ -19,10 +19,10 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - pip install --cache-dir .pip_cache -r requirements.txt
+            - python3.10 -m venv ~/Shreya/virtualenv
             - source ~/Shreya/virtualenv/bin/activate
-            - export DJANGO_SETTINGS_MODULE=pydjango_ci_integration.settings
-            - python3.10 -c "import django; django.setup()"
+            - pip install --upgrade pip
+            - pip install -r requirements.txt
   - name: Run Code Analysis
     task:
       prologue:
