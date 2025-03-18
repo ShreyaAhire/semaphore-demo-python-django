@@ -13,7 +13,7 @@ blocks:
     task:
       prologue:
         commands:
-          - sudo apt-get update && sudo apt-get install -y python3-dev && sudo apt-get install default-libmysqlclient-dev
+          - sudo apt-get update && sudo apt-get install -y python3.10-dev && sudo apt-get install default-libmysqlclient-dev
       jobs:
         - name: pip
           commands:
@@ -21,6 +21,8 @@ blocks:
             - cache restore
             - pip download --cache-dir .pip_cache -r requirements.txt
             - cache store
+            - export DJANGO_SETTINGS_MODULE=pydjango_ci_integration.settings
+            - python -c "import django; django.setup()"
   - name: Run Code Analysis
     task:
       prologue:
