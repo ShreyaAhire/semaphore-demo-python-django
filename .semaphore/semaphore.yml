@@ -19,8 +19,8 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - python3.10 -m venv ~/Shreya/virtualenv
-            - source ~/Shreya/virtualenv/bin/activate
+            - python3.10 -m venv virtualenv
+            - source ./virtualenv/bin/activate
             - pip install --upgrade pip
             - pip install -r requirements.txt
   - name: Run Code Analysis
