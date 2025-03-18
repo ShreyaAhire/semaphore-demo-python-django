@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+"""
 from django.urls import path
 from . import views
 
@@ -25,3 +26,23 @@ urlpatterns = [
     path('edit/<int:pk>', views.TaskUpdate.as_view(), name='tasks_edit'),
     path('delete/<int:pk>', views.TaskDelete.as_view(), name='tasks_delete'),
 ]
+"""
+
+#--
+"""
+tasks URL Configuration
+"""
+
+from django.urls import path
+from . import views
+
+app_name = "tasks"
+
+urlpatterns = [
+    path("", views.TaskList.as_view(), name="tasks_list"),
+    path("new/", views.TaskCreate.as_view(), name="tasks_new"),
+    path("task/<int:pk>/", views.TaskDetails.as_view(), name="tasks_view"),
+    path("edit/<int:pk>/", views.TaskUpdate.as_view(), name="tasks_edit"),
+    path("delete/<int:pk>/", views.TaskDelete.as_view(), name="tasks_delete"),
+]
+
