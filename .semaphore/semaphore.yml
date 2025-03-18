@@ -19,8 +19,8 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - pip download --cache-dir .pip_cache -r requirements.txt
-            - cache store
+            - pip install --cache-dir .pip_cache -r requirements.txt
+            - source ~/Shreya/virtualenv/bin/activate
             - export DJANGO_SETTINGS_MODULE=pydjango_ci_integration.settings
             - python3.10 -c "import django; django.setup()"
   - name: Run Code Analysis
