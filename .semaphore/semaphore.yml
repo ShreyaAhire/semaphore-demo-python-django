@@ -52,8 +52,7 @@ blocks:
           - sleep 5  # Allow MySQL time to initialize
           - 'mysql --version  # Check installed version'
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
-          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE pydjango;"
-          - source ~/virtualenv/bin/activate
+          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE pydjango;"          
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
         - name: Model Test
