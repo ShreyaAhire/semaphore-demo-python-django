@@ -25,7 +25,8 @@ class Task(models.Model):
         """
         :return: returns the absolute URL for Task model
         """
-        return reverse("tasks_edit", kwargs={"pk": self.pk})
+        #return reverse("tasks_edit", kwargs={"pk": self.pk})
+        return reverse("tasks:tasks_edit", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name = "Task"
