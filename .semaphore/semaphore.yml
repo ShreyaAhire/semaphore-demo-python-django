@@ -50,7 +50,7 @@ blocks:
           - sudo apt-get install -y mysql-server
           - sudo systemctl start mysql
           - 'mysql --version  # Check installed version'
-          - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root'; FLUSH PRIVILEGES;"
+          - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
           - sudo mysql -uroot -proot -e "CREATE DATABASE pydjango;"
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
@@ -73,7 +73,7 @@ blocks:
           - checkout
           - cache restore
           - pip install -r requirements.txt --cache-dir .pip_cache
-          - 'nohup python manage.py runserver 127.0.0.1:8732 &'
+          - 'nohup python manage.py runserver 0.0.0.0:8000 &'
       jobs:
         - name: Browser Test
           commands:
