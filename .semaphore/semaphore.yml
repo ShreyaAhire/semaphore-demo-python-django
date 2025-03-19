@@ -53,9 +53,11 @@ blocks:
           - 'mysql --version  # Check installed version'
           # Configure MySQL root user to allow remote access
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
-          # Grant all privileges without IDENTIFIED BY
-          - sudo mysql -uroot -pabc123 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE IF NOT EXISTS pydjango;         
+          # Allow remote access by granting privileges
+          - sudo mysql -uroot -pabc123 -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'abc123';"
+          - sudo mysql -uroot -pabc123 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+          - sudo mysql -uroot -pabc123 -e "FLUSH PRIVILEGES;"
+          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE IF NOT EXISTS pydjango;"         
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
         - name: Model Test
