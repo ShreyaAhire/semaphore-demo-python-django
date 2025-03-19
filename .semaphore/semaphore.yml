@@ -75,9 +75,7 @@ blocks:
           value: abc123
       prologue:
         commands:
-          - sem-service start mysql          
-          - sudo apt-get update && sudo apt-get install -y -qq mysql-client          
-          - sudo systemctl start mysql
+          - sem-service start mysql   # This starts MySQL in Semaphore CI                   
           - sleep 5  # Allow MySQL to initialize
           - mysqladmin -h localhost -u root status  # Verify MySQL is running
           - sudo apt-get update && sudo apt-get install -y -qq mysql-client          
