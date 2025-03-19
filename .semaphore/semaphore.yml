@@ -75,8 +75,9 @@ blocks:
           value: abc123
       prologue:
         commands:
-          - sem-service start mysql   # This starts MySQL in Semaphore CI                   
+          - sem-service start mysql 8.0   # This starts MySQL in Semaphore CI                   
           - sleep 5  # Allow MySQL to initialize
+          - mysql --version
           - mysqladmin -h localhost -u root status  # Verify MySQL is running
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; FLUSH PRIVILEGES;"
           - sudo mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
