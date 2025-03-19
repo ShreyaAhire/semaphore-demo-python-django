@@ -40,4 +40,4 @@ class TaskModelTest(TestCase):
         :return: None
         """
         task = Task.objects.get(id=1)
-        self.assertEqual(task.get_absolute_url(), '/edit/1')
+        self.assertEqual(task.get_absolute_url(), '/edit/1/')
