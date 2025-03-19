@@ -77,7 +77,7 @@ blocks:
         commands:
           - sem-service start mysql
           - sudo apt-get update && sudo apt-get install -y -qq mysql-client
-          - mysql --host=0.0.0.0 -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+          - mysql --host=localhost -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
           - checkout
           - cache restore         
           - pip install -r requirements.txt --cache-dir .pip_cache
