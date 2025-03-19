@@ -29,6 +29,7 @@ class TaskCreate(CreateView):
     """
     model = Task
     fields = ["task_title", "task_description"]
+    template_name = "tasks/task_form.html"
 
     def get_success_url(self):
         return reverse("tasks:tasks_list")
