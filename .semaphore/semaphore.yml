@@ -49,34 +49,42 @@ blocks:
           - sudo apt-get update
           - sudo apt-get install -y mysql-server
           - sudo systemctl start mysql
+          - sleep 5  # Allow MySQL time to initialize
           - 'mysql --version  # Check installed version'
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
-          - sudo mysql -uroot -proot -e "CREATE DATABASE pydjango;"
+          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE pydjango;"
+          - source ~/virtualenv/bin/activate
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
         - name: Model Test
           commands:
+            - source ~/virtualenv/bin/activate
             - python manage.py test tasks.tests.test_models
         - name: View Test
           commands:
+            - source ~/virtualenv/bin/activate
             - python manage.py test tasks.tests.test_views
   - name: Run Browser Tests
     task:
       env_vars:
         - name: DB_NAME
           value: pydjango
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123  # Set this as an environment variable
       prologue:
         commands:
           - sem-service start mysql
           - sudo apt-get update && sudo apt-get install -y -qq mysql-client
-          - mysql --host=0.0.0.0 -uroot -e "create database $DB_NAME"
+          - mysql --host=0.0.0.0 -uroot p$MYSQL_ROOT_PASSWORD -e "create database $DB_NAME"
           - checkout
           - cache restore
+          - source ~/virtualenv/bin/activate
           - pip install -r requirements.txt --cache-dir .pip_cache
           - 'nohup python manage.py runserver 0.0.0.0:8000 &'
       jobs:
         - name: Browser Test
           commands:
+            - source ~/virtualenv/bin/activate
             - python manage.py test tasks.tests.test_browser
   - name: Run Security Tests
     task:
@@ -85,5 +93,6 @@ blocks:
           commands:
             - checkout
             - cache restore
+            - source ~/virtualenv/bin/activate
             - pip install -r requirements.txt --cache-dir .pip_cache
             - python manage.py check --deploy --fail-level ERROR
