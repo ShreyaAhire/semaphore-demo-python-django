@@ -57,12 +57,10 @@ blocks:
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
         - name: Model Test
-          commands:
-            - source ~/virtualenv/bin/activate
+          commands:            
             - python manage.py test tasks.tests.test_models
         - name: View Test
-          commands:
-            - source ~/virtualenv/bin/activate
+          commands:           
             - python manage.py test tasks.tests.test_views
   - name: Run Browser Tests
     task:
@@ -77,14 +75,12 @@ blocks:
           - sudo apt-get update && sudo apt-get install -y -qq mysql-client
           - mysql --host=0.0.0.0 -uroot p$MYSQL_ROOT_PASSWORD -e "create database $DB_NAME"
           - checkout
-          - cache restore
-          - source ~/virtualenv/bin/activate
+          - cache restore         
           - pip install -r requirements.txt --cache-dir .pip_cache
           - 'nohup python manage.py runserver 0.0.0.0:8000 &'
       jobs:
         - name: Browser Test
-          commands:
-            - source ~/virtualenv/bin/activate
+          commands:            
             - python manage.py test tasks.tests.test_browser
   - name: Run Security Tests
     task:
@@ -92,7 +88,6 @@ blocks:
         - name: Deployment Checklist
           commands:
             - checkout
-            - cache restore
-            - source ~/virtualenv/bin/activate
+            - cache restore            
             - pip install -r requirements.txt --cache-dir .pip_cache
             - python manage.py check --deploy --fail-level ERROR
