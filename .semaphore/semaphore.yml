@@ -49,50 +49,46 @@ blocks:
           - sudo apt-get update
           - sudo apt-get install -y mysql-server
           - sudo systemctl start mysql
-          - sleep 5  # Allow MySQL time to initialize
+          - sleep 5
           - 'mysql --version  # Check installed version'
-          # Configure MySQL root user to allow remote access
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
-          # Allow remote access by granting privileges
           - sudo mysql -uroot -pabc123 -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'abc123';"
           - sudo mysql -uroot -pabc123 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
           - sudo mysql -uroot -pabc123 -e "FLUSH PRIVILEGES;"
-          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE IF NOT EXISTS pydjango;"         
+          - sudo mysql -uroot -pabc123 -e "CREATE DATABASE IF NOT EXISTS pydjango;"
           - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
         - name: Model Test
-          commands:            
+          commands:
             - python manage.py test tasks.tests.test_models
         - name: View Test
-          commands:           
+          commands:
             - python manage.py test tasks.tests.test_views
   - name: Run Browser Tests
     task:
       env_vars:
         - name: DB_NAME
-          value: pydjango 
+          value: pydjango
         - name: MYSQL_ROOT_PASSWORD
           value: abc123
       prologue:
         commands:
-          - sem-service start mysql 8.0   # This starts MySQL in Semaphore CI                   
-          - sleep 5  # Allow MySQL to initialize
+          - sem-service start mysql 8.0
+          - sleep 5
           - mysql --version
-          - mysqladmin -h localhost -u root status  # Verify MySQL is running
-          # Configure MySQL root user to allow remote access
+          - mysqladmin -h localhost -u root status
           - sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; FLUSH PRIVILEGES;"
-          # Allow remote access by granting privileges
           - sudo mysql -uroot -pabc123 -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'abc123';"
           - sudo mysql -uroot -pabc123 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
           - sudo mysql -uroot -pabc123 -e "FLUSH PRIVILEGES;"
           - sudo mysql -uroot -pabc123 -e "CREATE DATABASE IF NOT EXISTS pydjango;"
           - checkout
-          - cache restore         
+          - cache restore
           - pip install -r requirements.txt --cache-dir .pip_cache
           - 'nohup python manage.py runserver 0.0.0.0:8000 &'
       jobs:
         - name: Browser Test
-          commands:            
+          commands:
             - python manage.py test tasks.tests.test_browser
   - name: Run Security Tests
     task:
@@ -100,6 +96,11 @@ blocks:
         - name: Deployment Checklist
           commands:
             - checkout
-            - cache restore            
+            - cache restore
             - pip install -r requirements.txt --cache-dir .pip_cache
             - python manage.py check --deploy --fail-level ERROR
+promotions:
+  - name: Promotion 1
+    pipeline_file: pipeline_2.yml
+    auto_promote:
+      when: branch = 'master' AND result = 'passed'
