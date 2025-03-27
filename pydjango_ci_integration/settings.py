@@ -59,8 +59,8 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-#SITE_URL = 'http://127.0.0.1:8732/'
-SITE_URL ='http://0.0.0.0:8000'
+SITE_URL = 'http://127.0.0.1:8732/'
+#SITE_URL ='http://0.0.0.0:8000'
 
 """
 MIDDLEWARE = [
